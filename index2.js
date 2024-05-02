@@ -102,8 +102,71 @@ app.get('/sumar',(req,res)=>{
 
 });
 
+//9.-RESTA SIN PARAMETROS Y JSON
+//url: http:localhost:3000/resta?n11=20&n22=10
+app.get('/resta',(req,res)=>{
+    const n1=parseInt(req.query.n11);
+    const n2=parseInt(req.query.n22);
+    var resul=0;
+    if(n1>n2){
 
+        resul=n1-n2;
+    }else{
 
+        resul=n2-n1;
+    }
+
+    const resultado={total:resul};
+    res.json(resultado);
+
+});
+//10.-EJERCICIO POBLACIONAL , VAMOS A SIMULAR LA POBLACIÓN DE 
+//CONEJOS , POR LO QUE NECESITO CONOCER LOS SIGUIENTES DATOS:
+//1.- EL NÚMERO DE PAREJAS DE CONEJOS POR AÑO
+//2.- EL NÚMERO DE CRÍAS POR PAREJA POR AÑO TOMANDO EN CUENTA QUE 
+//ESTE DATO SE EJECUTARÁ DESPUÉS DEL PRIMER AÑO
+//3.- EL PORCENTAJE DE TASA DE MORTALIDAD ANUAL
+//4.- SIMULAR ESTO DURANTE UN PERIODO DE TIEMPO
+//5.- MOSTRAR LA POBLACIÓN ANUAL ,EL NÚMERO DE CONEJOS 
+//QUE MORIRÁ, Y LA POBLACIÓN RESTANTE
+//url: http:localhost:3000/conejos?p=3&nPar=5&nCri=3&tMor=20
+app.get('/conejos',(req,res)=>{
+    var pActual=0,pMuere=0,pTotal=0,numCrias=0,parejas=0;
+    const resultados=new Array();
+    //periodo
+    const peri=parseInt(req.query.p);
+    //número de parejas conejos
+    const nParejas=parseInt(req.query.nPar);
+    //número de crías
+    const nCrias=parseInt(req.query.nCri);
+    //tasa de Mortalidad
+    const tMort=parseInt(req.query.tMor);
+
+    for(let i=0;i<=peri;i++){
+        if(i==0){
+        parejas=nParejas;
+        pActual=nParejas*2;
+        pMuere=pActual*tMort/100;
+        pTotal=pActual-pMuere;}
+        else{
+            numCrias=nParejas*nCrias;
+            pActual+=numCrias;
+            pMuere=pActual*tMort/100;
+            pTotal=pActual-pMuere;
+            parejas=pTotal/2;
+        }
+        
+               resultados.push(      
+                        {pAnual:pActual,
+                          pMorir:pMuere,                          
+                          pRestante:pTotal,
+                          nParejas:parejas,
+                          nCrias:numCrias});
+        
+    }
+    
+    res.json(resultados);
+});
 
 
 
