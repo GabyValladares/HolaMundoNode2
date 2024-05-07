@@ -1,7 +1,11 @@
 //constante que llama al framework
 const express = require('express')
+const https = require('https');
+const fs = require('fs');
 
 const app = express()
+
+
 
 //SERVICIO WEB DE TIPO GET 
 app.get('/', function (req, res) {
@@ -149,14 +153,14 @@ app.get('/conejos',(req,res)=>{
         pMuere=pActual*tMort/100;
         pTotal=pActual-pMuere;}
         else{
-            numCrias=nParejas*nCrias;
+            numCrias=parejas*nCrias;
             pActual+=numCrias;
             pMuere=pActual*tMort/100;
             pTotal=pActual-pMuere;
             parejas=pTotal/2;
         }
         
-               resultados.push(      
+                resultados.push(     
                         {pAnual:pActual,
                           pMorir:pMuere,                          
                           pRestante:pTotal,
@@ -171,4 +175,10 @@ app.get('/conejos',(req,res)=>{
 
 
 //SERVICIO ESCUCHE DESDE EL PUERTO 3000
-app.listen(3000)
+// app.listen(3000)
+https.createServer({
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+    passphrase: '1234567'
+}, app)
+.listen(3000);

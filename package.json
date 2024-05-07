@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/GabyValladares/HolaMundoNode2#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "https": "^1.0.0"
   }
 }
